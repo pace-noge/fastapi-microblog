@@ -4,8 +4,12 @@ from sqlalchemy import (
     DateTime
 )
 from sqlalchemy.orm import relationship
+from passlib.context import CryptContext
 
 from .db import Base
+
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 class User(Base):
@@ -18,8 +22,16 @@ class User(Base):
     posts =  relationship('Post', backref='author', lazy='dynamic')
 
 
+    def set_password(self, password):
+        self.password = pwd_context.hash(password)
+
+
+    def verify_password(self, password):
+        return pwd_context.verify(password, self.password)
+
+
     def __repr__(self):
-        return f"<User {self.username}"
+        return f"<User {self.username}>"
 
 
 class Post(Base):
