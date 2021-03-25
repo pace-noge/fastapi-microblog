@@ -6,7 +6,7 @@ from sqlalchemy import (
 from sqlalchemy.orm import relationship
 from passlib.context import CryptContext
 
-from .db import Base
+from core.db import Base
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
