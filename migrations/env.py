@@ -7,7 +7,6 @@ from alembic import context
 
 from config import Config
 
-print("config", Config)
 
 
 # this is the Alembic Config object, which provides
