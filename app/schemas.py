@@ -1,5 +1,19 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List, Callable
+
+
+class PostBase(BaseModel):
+    body: str
+    timestamp: str
+
+
+class Post(PostBase):
+    id: int
+    user_id: int
+
+    class Config:
+        orm_mode = True
+
 
 
 class UserBase(BaseModel):
@@ -13,6 +27,8 @@ class UserCreate(UserBase):
 
 class User(UserBase):
     id: int
+    posts: List[Post] = []
+    avatar: str
 
     class Config:
         orm_mode = True

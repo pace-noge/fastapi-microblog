@@ -58,6 +58,22 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
 
 
 
+@app.get("/users/{id}", response_model=schemas.User)
+async def read_user(id: int, db: Session = Depends(get_db), token: str =
+               Depends(oauth2_scheme)):
+    user = db.query(User).filter(User.id == id).first()
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found"
+        )
+    user.avatar = user.avatar()
+    return user
+
+
+
 @app.get("/items")
 async def read_items(token: str = Depends(oauth2_scheme)):
     return {"token": token}
+
+
